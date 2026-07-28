@@ -2058,11 +2058,6 @@
           option.setAttribute("aria-selected", String(selected));
         });
 
-        try {
-          localStorage.setItem("doit-gold-language-v2", language);
-        } catch (error) {
-          // Keep the active language for this page view when storage is unavailable.
-        }
       };
 
       languageTrigger.addEventListener("click", () => {
@@ -2095,12 +2090,7 @@
         });
       });
 
-      try {
-        const savedLanguage = localStorage.getItem("doit-gold-language-v2");
-        setLanguage(savedLanguage === "zh-CN" ? "zh-CN" : "en");
-      } catch (error) {
-        setLanguage("en");
-      }
+      setLanguage("en");
 
       lookupForm.addEventListener("submit", (event) => {
         event.preventDefault();
