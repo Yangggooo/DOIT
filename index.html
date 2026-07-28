@@ -10,6 +10,9 @@
     />
     <link rel="icon" href="./assets/doit-logo-mark.png" />
     <link rel="preload" as="image" href="./assets/doit-gold-vault-hero-v2.jpg" />
+    <script>
+      document.documentElement.classList.add("reveal-ready");
+    </script>
     <style>
       :root {
         --black: #050505;
@@ -966,6 +969,25 @@
         white-space: nowrap;
       }
 
+      .reveal-ready .site-reveal {
+        opacity: 0;
+      }
+
+      .reveal-ready .site-reveal.is-visible {
+        animation: site-reveal 0.8s ease both;
+        animation-delay: var(--reveal-delay, 0ms);
+      }
+
+      @keyframes site-reveal {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
       :focus-visible {
         outline: 2px solid var(--yellow);
         outline-offset: 3px;
@@ -1458,7 +1480,13 @@
         *,
         *::before,
         *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
           transition-duration: 0.01ms !important;
+        }
+
+        .reveal-ready .site-reveal {
+          opacity: 1;
         }
       }
     </style>
@@ -1773,6 +1801,46 @@
       const lookupForm = document.querySelector("#lookup-form");
       const lookupInput = document.querySelector("#lookup-input");
       const faqItems = document.querySelectorAll(".faq-list details");
+      const revealGroups = [
+        ".nav .brand, .nav .nav-actions",
+        ".hero .eyebrow, .hero h1, .hero-tagline, .hero-copy, .hero-actions",
+        ".reserve .section-head > *, .reserve-feature > *, .stats .stat",
+        ".why-gold-photo, .why-gold-content > .eyebrow, .why-gold-content > h2, .why-gold-intro, .gold-reason, .why-gold-note",
+        ".advantages .section-head > *, .vault-photo, .advantage-item",
+        ".ecosystem .section-head > *, .ecosystem-role",
+        ".journey .section-head > *, .journey-step",
+        ".report-photo, .lookup > .eyebrow, .lookup > h2, .lookup > p, .lookup-form, .report-links",
+        ".platform-ecosystem-head > *, .ecosystem-logo-board",
+        ".faq .section-head > *, .faq-list details",
+        ".footer-main"
+      ];
+      const revealElements = new Set();
+
+      revealGroups.forEach((selector) => {
+        document.querySelectorAll(selector).forEach((element, index) => {
+          element.classList.add("site-reveal");
+          element.style.setProperty("--reveal-delay", `${Math.min(index, 4) * 90}ms`);
+          revealElements.add(element);
+        });
+      });
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
+        revealElements.forEach((element) => element.classList.add("is-visible"));
+      } else {
+        const revealObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+        );
+
+        revealElements.forEach((element) => revealObserver.observe(element));
+      }
+
       const englishTranslations = {
         "登录": "Log in",
         "黄金稳定币": "Gold-backed Stablecoin",
