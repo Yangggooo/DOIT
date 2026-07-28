@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>DOIT GOLD - 实物黄金，数字化流通</title>
+    <title>DOIT GOLD - Physical Gold, Digitally Transferable</title>
     <meta
       name="description"
-      content="DOIT GOLD 黄金稳定币，以实物黄金为储备支持，由渣打银行负责黄金交易执行，Brink's 金库托管，京东提供技术支持。"
+      content="DOIT GOLD is a gold-backed stablecoin supported by physical gold, with Standard Chartered executing gold purchases, Brink’s providing vault custody, and JD providing technology support."
     />
     <link rel="icon" href="./assets/doit-logo-mark.png" />
     <link rel="preload" as="image" href="./assets/doit-gold-vault-hero-v2.jpg" />
@@ -2059,7 +2059,7 @@
         });
 
         try {
-          localStorage.setItem("doit-gold-language", language);
+          localStorage.setItem("doit-gold-language-v2", language);
         } catch (error) {
           // Keep the active language for this page view when storage is unavailable.
         }
@@ -2096,10 +2096,10 @@
       });
 
       try {
-        const savedLanguage = localStorage.getItem("doit-gold-language");
-        setLanguage(savedLanguage === "en" ? "en" : "zh-CN");
+        const savedLanguage = localStorage.getItem("doit-gold-language-v2");
+        setLanguage(savedLanguage === "zh-CN" ? "zh-CN" : "en");
       } catch (error) {
-        setLanguage("zh-CN");
+        setLanguage("en");
       }
 
       lookupForm.addEventListener("submit", (event) => {
